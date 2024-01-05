@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shipping System</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        }
+        form {
+        max-width: 400px;
+        margin: 20px auto;
+        }
+    </style>
+    </head>
+    <body>
+
+    <form id="shippingForm">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+
+        <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <div id="mainMenu" style="display: none;">
+        <h2>Main Menu</h2>
+        <button onclick="sendPackage()">Send a Package</button>
+        <button onclick="exitSystem()">Exit System</button>
+    </div>
+
+    <script>
+        let loginAttempts = 0;
+        const maxLoginAttempts = 3;
+        let loggedIn = false;
+
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+      // Simulate basic authentication (replace with your actual authentication logic)
+        if (username === 'user123' && password === 'pass456') {
+        console.log('Login successful!');
+        loggedIn = true;
+        showMainMenu();
+        } else {
+        loginAttempts++;
+        console.log(`Login failed. Attempts remaining: ${maxLoginAttempts - loginAttempts}`);
+        if (loginAttempts >= maxLoginAttempts) {
+            console.log('Too many failed login attempts. Locking the system.');
+            document.getElementById('shippingForm').reset(); // Reset the form
+            }
+        }
+    }
+
+    function showMainMenu() {
+        document.getElementById('shippingForm').style.display = 'none';
+        document.getElementById('mainMenu').style.display = 'block';
+    }
+
+    function sendPackage() {
+        const senderName = prompt('Enter sender\'s name:');
+        const senderAddress = prompt('Enter sender\'s address:');
+        const recipientName = prompt('Enter recipient\'s name:');
+        const recipientAddress = prompt('Enter recipient\'s address:');
+        const weight = parseFloat(prompt('Enter the total weight of the package in kg:'));
+
+        if (isNaN(weight)) {
+        alert('Invalid weight. Please enter a valid number.');
+        return;
+        }
+
+      const packageNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      const shippingPrice = weight * 2;
+
+        console.log('\nPackage details:');
+        console.log(`Package Number: ${packageNumber}`);
+        console.log(`Sender: ${senderName}, Address: ${senderAddress}`);
+        console.log(`Recipient: ${recipientName}, Address: ${recipientAddress}`);
+        console.log(`Total Weight: ${weight} kg`);
+        console.log(`Shipping Price: $${shippingPrice}\n`);
+
+        const performAnotherOperation = confirm('Do you want to perform another operation?');
+        if (performAnotherOperation) {
+        showMainMenu();
+        } else {
+            exitSystem();
+        }
+    }
+
+    function exitSystem() {
+        console.log('Exiting the system. Goodbye!');
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('shippingForm').reset(); // Reset the form
+        document.getElementById('shippingForm').style.display = 'block';
+        loggedIn = false;
+        loginAttempts = 0;
+        }
+    </script>
+</body>
+</html>
